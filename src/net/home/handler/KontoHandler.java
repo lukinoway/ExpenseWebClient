@@ -9,6 +9,8 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import konto.data.model.Konto;
+
 public class KontoHandler {
     
 /**
@@ -40,6 +42,27 @@ public class KontoHandler {
 	    }
 	    
 	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+    }
+    
+    public void addKonto(Konto konto) {
+	try {
+	    String url = "http://localhost:8081/ExpenseWebservice/kontohandler/addkonto";
+
+	    
+	    Client client = Client.create();
+	    WebResource resource = client.resource(url);
+	    ClientResponse response = resource.accept("application/json").type("application/json").post(ClientResponse.class, new JSONObject(konto).toString());
+	    
+	    if (response.getStatus() != 200) {
+		throw new RuntimeException("Failed: HTTP ERROR : " + response.getStatus() + "detail: " + response.toString());
+	    }
+	    
+	    String input = response.getEntity(String.class);
+	    System.out.println(input);
+	    
+	} catch(Exception e) {
 	    e.printStackTrace();
 	}
     }

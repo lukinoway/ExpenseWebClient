@@ -9,6 +9,9 @@ import org.json.JSONObject;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 
 import konto.data.model.Transaktion;
 
@@ -53,6 +56,26 @@ public class TransaktionHandler {
 	    System.out.println("found <" + all.size() + "> transaktions");
 	    
 	    
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+    }
+    
+    public void addTransaktion(Transaktion transaktion) {
+	try {
+	    String url = "http://localhost:8081/ExpenseWebservice/transaktionhandler/addtransaktion";
+	    
+	    Client client = Client.create();
+	    WebResource resource = client.resource(url);
+	    System.out.println(transaktion.toString());
+	    ClientResponse response = resource.accept("application/json").type("application/json").post(ClientResponse.class, new JSONObject(transaktion).toString());
+	    
+	    if (response.getStatus() != 200) {
+		throw new RuntimeException("Failed: HTTP ERROR : " + response.getStatus() + "detail: " + response.toString());
+	    }
+	    
+	    String input = response.getEntity(String.class);
+	    System.out.println(input);
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
