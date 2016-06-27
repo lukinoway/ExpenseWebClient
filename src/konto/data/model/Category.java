@@ -50,5 +50,10 @@ public class Category {
     public void setParent(int parent) {
 	this.parent = parent;
     }
+    
+    @Override
+    public String toString() {
+	return "Category [ ID=" + this.typeId + "; Text=" + typeText + "]";
+    }
 
 }

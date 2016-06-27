@@ -1,8 +1,6 @@
 package net.home.handler;
 
 import java.util.ArrayList;
-import java.util.Date;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -10,10 +8,6 @@ import org.json.JSONObject;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
-
 import konto.data.model.Transaktion;
 
 public class TransaktionHandler {
@@ -109,7 +103,7 @@ public class TransaktionHandler {
     
     public void deleteTransaktion(Transaktion transaktion) {
 	try {
-	    String url = "http://localhost:8081/ExpenseWebservice/transaktionhandler/updatetransaktion";
+	    String url = "http://localhost:8081/ExpenseWebservice/transaktionhandler/deletetransaktion";
 	    
 	    Client client = Client.create();
 	    WebResource resource = client.resource(url);
