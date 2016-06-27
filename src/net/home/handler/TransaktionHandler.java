@@ -3,6 +3,7 @@ package net.home.handler;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -76,6 +77,52 @@ public class TransaktionHandler {
 	    
 	    String input = response.getEntity(String.class);
 	    System.out.println(input);
+	    
+	    // to some magic 
+	    int index = input.lastIndexOf("=");
+	    transaktion.setTransaktionsId(Integer.parseInt(input.substring(index + 1)));
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+    }
+    
+    public void updateTransaktion(Transaktion transaktion) {
+	try {
+	    String url = "http://localhost:8081/ExpenseWebservice/transaktionhandler/updatetransaktion";
+	    
+	    Client client = Client.create();
+	    WebResource resource = client.resource(url);
+	    System.out.println(transaktion.toString());
+	    ClientResponse response = resource.accept("application/json").type("application/json").post(ClientResponse.class, new JSONObject(transaktion).toString());
+	    
+	    if (response.getStatus() != 200) {
+		throw new RuntimeException("Failed: HTTP ERROR : " + response.getStatus() + "detail: " + response.toString());
+	    }
+	    
+	    String input = response.getEntity(String.class);
+	    System.out.println(input);
+	    
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+    }
+    
+    public void deleteTransaktion(Transaktion transaktion) {
+	try {
+	    String url = "http://localhost:8081/ExpenseWebservice/transaktionhandler/updatetransaktion";
+	    
+	    Client client = Client.create();
+	    WebResource resource = client.resource(url);
+	    System.out.println(transaktion.toString());
+	    ClientResponse response = resource.accept("application/json").type("application/json").post(ClientResponse.class, new JSONObject(transaktion).toString());
+	    
+	    if (response.getStatus() != 200) {
+		throw new RuntimeException("Failed: HTTP ERROR : " + response.getStatus() + "detail: " + response.toString());
+	    }
+	    
+	    String input = response.getEntity(String.class);
+	    System.out.println(input);
+	    
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -87,17 +134,11 @@ public class TransaktionHandler {
 	try {
 	    for(int i = 0 ; i < array.length() ; i++) {
 		JSONObject elem = array.getJSONObject(i);
-		String trText = elem.getString("transaktionsText");
-		String trHash = elem.getString("transaktionsHash");
-		Double trBetrag = elem.getDouble("transaktionsBetrag");
-		int trKonto = elem.getInt("kontoId");
-		int trType = elem.getInt("typeId");
-		int trId = elem.getInt("transaktionsId");
-		String trDateStr = elem.getString("transaktionsDate");
-		//Date trDate = new Date(trDateStr);
 		
-		// build array
-		transaktionList.add(new Transaktion(trId, new Date(), trBetrag, trText, trHash, trKonto, trType));
+		ObjectMapper mapper = new ObjectMapper();
+		Transaktion transaktion = mapper.readValue(elem.toString(), Transaktion.class);
+		
+		transaktionList.add(transaktion);
 	    }
 	} catch (Exception e) {
 	    e.printStackTrace();

@@ -62,6 +62,52 @@ public class KontoHandler {
 	    String input = response.getEntity(String.class);
 	    System.out.println(input);
 	    
+	    // to some magic 
+	    int index = input.lastIndexOf("=");
+	    konto.setKontoId(Integer.parseInt(input.substring(index + 1)));
+	    
+	} catch(Exception e) {
+	    e.printStackTrace();
+	}
+    }
+    
+    public void updateKonto(Konto konto) {
+	try {
+	    String url = "http://localhost:8081/ExpenseWebservice/kontohandler/updatekonto";
+
+	    
+	    Client client = Client.create();
+	    WebResource resource = client.resource(url);
+	    ClientResponse response = resource.accept("application/json").type("application/json").post(ClientResponse.class, new JSONObject(konto).toString());
+	    
+	    if (response.getStatus() != 200) {
+		throw new RuntimeException("Failed: HTTP ERROR : " + response.getStatus() + "detail: " + response.toString());
+	    }
+	    
+	    String input = response.getEntity(String.class);
+	    System.out.println(input);
+	    
+	} catch(Exception e) {
+	    e.printStackTrace();
+	}
+    }
+    
+    public void deleteKonto(Konto konto) {
+	try {
+	    String url = "http://localhost:8081/ExpenseWebservice/kontohandler/deletekonto";
+
+	    
+	    Client client = Client.create();
+	    WebResource resource = client.resource(url);
+	    ClientResponse response = resource.accept("application/json").type("application/json").post(ClientResponse.class, new JSONObject(konto).toString());
+	    
+	    if (response.getStatus() != 200) {
+		throw new RuntimeException("Failed: HTTP ERROR : " + response.getStatus() + "detail: " + response.toString());
+	    }
+	    
+	    String input = response.getEntity(String.class);
+	    System.out.println(input);
+	    
 	} catch(Exception e) {
 	    e.printStackTrace();
 	}

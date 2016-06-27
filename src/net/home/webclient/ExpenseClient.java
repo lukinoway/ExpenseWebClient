@@ -20,11 +20,19 @@ public class ExpenseClient {
 	tHandler.getAllTransaktions("test", "test");
 	
 	try {
+	    // Transaktion Tests
 	    Transaktion transaktion = new Transaktion(new Date(), 20.0, "webservice", 5, 1);
 	    tHandler.addTransaktion(transaktion);
+	    transaktion.setTransaktionsBetrag(40.0);
+	    tHandler.updateTransaktion(transaktion);
+	    tHandler.deleteTransaktion(transaktion);
 	    
+	    // Konto Tests
 	    Konto konto = new Konto("1234567890", "webserviceKonto", 1, true, "","");
 	    kHandler.addKonto(konto);
+	    konto.setKontoName("updated Name");
+	    kHandler.updateKonto(konto);
+	    kHandler.deleteKonto(konto);
 	} catch (NoSuchAlgorithmException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
